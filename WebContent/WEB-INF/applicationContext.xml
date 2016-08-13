@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	   		http://www.springframework.org/schema/context
+	   		http://www.springframework.org/schema/context/spring-context-4.3.xsd
+			http://www.springframework.org/schema/mvc 
+			http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+	<mvc:annotation-driven />
+	<context:component-scan base-package="com.mongodbBlog.*" />
+	<context:annotation-config />
+	
+	<!-- interceptor configuration -->
+	<mvc:interceptors>
+		<bean id="webContentInterceptor"
+			class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+			<property name="cacheSeconds" value="0" />
+			<property name="useExpiresHeader" value="true" />
+			<property name="useCacheControlHeader" value="true" />
+			<property name="useCacheControlNoStore" value="true" />
+		</bean>
+	</mvc:interceptors>
+	
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<bean id="userService" class="com.mongodbBlog.service.UserServiceImpl" />
+	<bean id="topicService" class="com.mongodbBlog.service.TopicServiceImpl"/>
+	<bean id="articleService" class="com.mongodbBlog.service.ArticleServiceImpl"/>
+	<bean id="commentService" class="com.mongodbBlog.service.CommentServiceImpl"/>
+	<bean id="sendSimpleEmailService" class="com.mongodbBlog.service.SendSimpleEmailServiceImpl"/>  
+	
+	<context:property-placeholder order="2" location="classpath:common.properties" ignore-unresolvable="true"/>
+	
+	<context:property-placeholder order="3" location="classpath:mail.properties" ignore-unresolvable="true"/>
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${mail.host}" />
+        <property name="port" value="${mail.port}" />
+        <property name="username" value="${mail.username}" />
+        <property name="password" value="${mail.password}" />
+        
+        <!-- The name of the property, following JavaBean naming conventions -->
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop> <!-- ${mail.transport.protocol} -->
+                <prop key="mail.smtp.auth">true</prop> <!-- ${mail.smtp.auth} -->
+                <prop key="mail.smtp.starttls.enable">true</prop> <!-- ${mail.smtp.starttls.enable} -->
+                <prop key="mail.debug">true</prop> <!-- ${mail.debug} -->
+            </props>
+        </property>
+    </bean>
+</beans>

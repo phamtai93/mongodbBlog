@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  
+      "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+      "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+      
+      <tiles-definitions> 
+      	 <definition name="baseTemplate" template="/WEB-INF/tiles-layouts/layouts/common.jsp">
+      	 	<put-attribute name="title" value=""></put-attribute>
+      	 	<put-attribute name="header" value="/WEB-INF/tiles-layouts/fragments/header.jsp"></put-attribute>
+      	 	<put-attribute name="menu" value="/WEB-INF/tiles-layouts/fragments/menu.jsp"></put-attribute>
+      	 	<put-attribute name="body" value=""></put-attribute>
+      	 	<put-attribute name="side-bar" value=""></put-attribute>
+      	 	<put-attribute name="pre-footer" value="/WEB-INF/tiles-layouts/fragments/pre-footer.jsp"></put-attribute>
+      	 	<put-attribute name="footer" value="/WEB-INF/tiles-layouts/fragments/footer.jsp"></put-attribute>
+      	 	<put-attribute name="jsfiles" value=""></put-attribute>
+      	 	<put-list-attribute name="javascript">
+      	 		<add-attribute value="/resources/front/js/jquery-1.11.0.min.js"></add-attribute>
+      	 		<add-attribute value="/resources/front/js/bootstrap.min.js"></add-attribute>
+      	 	    <add-attribute value="/resources/front/js/jquery.cookie.js"></add-attribute>
+      	 		<add-attribute value="/resources/front/js/waypoints.min.js"></add-attribute>
+      	 		<add-attribute value="/resources/front/js/jquery.counterup.min.js"></add-attribute>
+      	 		<add-attribute value="/resources/front/js/jquery.parallax-1.1.3.js"></add-attribute>
+      	 		<add-attribute value="/resources/front/js/front.js"></add-attribute>
+      	 	</put-list-attribute>
+      	 </definition>
+      	 
+      	 <definition name="home" extends="baseTemplate">
+      	 	<put-attribute name="title" value="home - coding blog" ></put-attribute>
+      	 	<put-attribute name="body" value="/WEB-INF/jsp/home.jsp"></put-attribute>
+      	 	<put-attribute name="side-bar" value="/WEB-INF/tiles-layouts/fragments/side-bar.jsp"></put-attribute>
+      	 	<!-- <put-list-attribute name="javascript" inherit="true"> </put-list-attribute> -->
+      	 </definition>
+      	 
+      	 <definition name="login" extends="baseTemplate">
+      	 	<put-attribute name="title" value="login - coding blog" ></put-attribute>
+      	 	<put-attribute name="body" value="/WEB-INF/jsp/login.jsp"></put-attribute>
+      	 	<!-- <put-list-attribute name="javascript" inherit="true"> </put-list-attribute> -->
+      	 </definition>
+      	 
+      	 <definition name="signup" extends="baseTemplate">
+      	 	<put-attribute name="title" value="signup - coding blog" ></put-attribute>
+      	 	<put-attribute name="body" value="/WEB-INF/jsp/signup.jsp"></put-attribute>
+      	 	<!-- <put-list-attribute name="javascript" inherit="true"> </put-list-attribute> -->
+      	 </definition>
+      	 
+      	 <definition name="register-fail" extends="baseTemplate">
+      	 	<put-attribute name="title" value="register-fail - coding blog" ></put-attribute>
+      	 	<put-attribute name="body" value="/WEB-INF/jsp/register-fail.jsp"></put-attribute>
+      	 	<!-- <put-list-attribute name="javascript" inherit="true"> </put-list-attribute> -->
+      	 </definition>
+      	 
+      	 <definition name="register-success" extends="baseTemplate">
+      	 	<put-attribute name="title" value="register-fail - coding blog" ></put-attribute>
+      	 	<put-attribute name="body" value="/WEB-INF/jsp/register-success.jsp"></put-attribute>
+      	 	<!-- <put-list-attribute name="javascript" inherit="true"> </put-list-attribute> -->
+      	 </definition>
+      	 
+      	 <definition name="activating-success" extends="baseTemplate">
+      	 	<put-attribute name="title" value="register-fail - coding blog" ></put-attribute>
+      	 	<put-attribute name="body" value="/WEB-INF/jsp/activating-success.jsp"></put-attribute>
+      	 	<!-- <put-list-attribute name="javascript" inherit="true"> </put-list-attribute> -->
+      	 </definition>
+      	 
+      	 <definition name="activating-fail" extends="baseTemplate">
+      	 	<put-attribute name="title" value="register-fail - coding blog" ></put-attribute>
+      	 	<put-attribute name="body" value="/WEB-INF/jsp/activating-fail.jsp"></put-attribute>
+      	 	<!-- <put-list-attribute name="javascript" inherit="true"> </put-list-attribute> -->
+      	 </definition>
+      	 
+      	 <definition name="user-info" extends="baseTemplate">
+      	 	<put-attribute name="title" value="user-info - coding blog" ></put-attribute>
+      	 	<put-attribute name="body" value="/WEB-INF/jsp/user-info.jsp"></put-attribute>
+      	 	<!-- <put-list-attribute name="javascript" inherit="true"> </put-list-attribute> -->
+      	 </definition>
+      </tiles-definitions>

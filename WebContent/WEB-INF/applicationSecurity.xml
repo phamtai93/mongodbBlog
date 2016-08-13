@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans       
+                    http://www.springframework.org/schema/beans/spring-beans-4.1.xsd    
+                    http://www.springframework.org/schema/security    
+                    http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+                    
+    <security:http auto-config="true" use-expressions="true"> 
+                    
+    <security:intercept-url pattern="/user/console/**" access="hasRole('admin_role')" />
+	<security:intercept-url pattern="/user/**" 		access="isAuthenticated()" />
+	<security:intercept-url pattern="/authUser/**" 		access="isAuthenticated()" />
+	<security:intercept-url pattern="/**" 			access="permitAll" />
+	<security:intercept-url pattern="/login*" 		access="permitAll" />
+	<security:access-denied-handler error-page="/403" />                
+                    
+    <security:form-login authentication-success-handler-ref="customAuthenticationSuccessHandler" 
+		login-page="/login.html" authentication-failure-url="/login.html?authfailed=true"
+		default-target-url="/index.html" />
+		
+	<security:session-management  invalid-session-url="/invalid-session.html" 
+									session-authentication-error-url="/session-authentcation-error.html" 
+									session-fixation-protection="migrateSession" >
+		<security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" expired-url="/session-expired.html"/>
+	</security:session-management>
+	
+	<security:custom-filter ref="logoutFilter"  before="LOGOUT_FILTER" /> <!-- position="LOGOUT_FILTER" -->
+
+	<security:remember-me key="remember-me-spring-mongodbBlog" token-validity-seconds="1209600" />  
+
+	<security:csrf />
+	
+    </security:http>
+    <bean id="customAuthenticationSuccessHandler" class="com.mongodbBlog.controller.CustomAuthenticationSuccessHandler"/>
+	<bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />  
+	
+	<!-- LOGOUT HANDLER BEAN @start-->		
+	<bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<constructor-arg  name="logoutSuccessHandler" ref="customLogoutSuccessHandlerFilter"/>
+		<constructor-arg  name="handlers">
+        	<list>
+            	<ref bean="securityContextLogoutHandler" />
+            	<ref bean="customLogoutHandlerFilter" />
+        	</list>
+   		</constructor-arg>
+		<property name="filterProcessesUrl" value="/logout.html"/><!-- /logout.html -->
+	</bean>
+	
+	<bean id="customLogoutSuccessHandlerFilter" name="customLogoutSuccessHandlerFilter" class="com.mongodbBlog.controller.CustomLogoutSuccessHandlerFilter"/>
+	<bean id="customLogoutHandlerFilter" name="customLogoutHandlerFilter" class="com.mongodbBlog.controller.CustomLogoutHandlerFilter"/>
+
+	<bean id="securityContextLogoutHandler"  name="securityContextLogoutHandler" 
+ 						class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
+ 		<property name="invalidateHttpSession" value="true"/>
+	</bean>
+	<!-- LOGOUT HANDLER BEAN @end-->
+	
+	<security:authentication-manager>
+		<security:authentication-provider  ref="authProvider"></security:authentication-provider>
+	</security:authentication-manager>
+	
+	<bean id="authProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService" ref="userDetailsServiceLogin" />
+		<property name="passwordEncoder" ref="encoder" />
+	</bean>
+	
+	<security:global-method-security secured-annotations="enabled" />
+	<bean id="userDetailsServiceLogin" class="com.mongodbBlog.service.UserDetailsServiceLogin"/>
+	
+	<!-- For hashing and salting user passwords -->
+	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />              
+</beans>

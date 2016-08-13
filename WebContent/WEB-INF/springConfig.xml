@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context-4.3.xsd
+          http://www.springframework.org/schema/data/mongo
+          http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+          http://www.springframework.org/schema/mvc
+          http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+	<context:property-placeholder order="1" location="classpath:mongo.properties" ignore-unresolvable="true"/>
+	<mongo:mongo-client host="${mongo.host}" port="${mongo.port}" >
+		<mongo:client-options 
+			connections-per-host="${mongo.connections-per-host}"
+			threads-allowed-to-block-for-connection-multiplier ="${mongo.threads-allowed-to-block-for-connection-multiplier}"
+			connect-timeout="${mongo.connect-timeout}"
+			max-wait-time="${mongo.max-wait-time}"
+			socket-keep-alive="${mongo.socket-keep-alive}"
+			socket-timeout="${mongo.socket-timeout}"
+			write-concern="NORMAL"/>
+	</mongo:mongo-client>
+	<mongo:db-factory dbname="mongodbBlog" id="mongoDbFactory" mongo-ref="mongo"/>
+
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+	</bean>
+	
+	<bean id="customUserRepository" class="com.mongodbBlog.repository.UserRepositoryImpl">
+		<constructor-arg name="mongoOper" ref="mongoTemplate"/>
+	</bean> 
+	<bean id="customTopicRepository" class="com.mongodbBlog.repository.TopicRepositoryImpl">
+		<constructor-arg name="mongoOper" ref="mongoTemplate"/>
+	</bean>
+	<bean id="customArticleRepository" class="com.mongodbBlog.repository.ArticleRepositoryImpl">
+		<constructor-arg name="mongoOper" ref="mongoTemplate"/>
+	</bean>
+		<bean id="customCommentRepository" class="com.mongodbBlog.repository.CommentRepositoryImpl">
+		<constructor-arg name="mongoOper" ref="mongoTemplate"/>
+	</bean>
+	<mongo:repositories base-package="com.mongodbBlog.repository"/>
+
+</beans>
